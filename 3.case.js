@@ -2,11 +2,15 @@ let Promise1 = require('./3.promise');
 let p = new Promise1(function (resolve,reject) {
   setTimeout(() => {
     resolve();
-  }, 1000);
+  }, 0);
 });
 let p1 = p.then(function (data) {
   // 循环引用 因为自己永远不会完成
-  return p1
+  return new Promise(function(resolve,reject) {
+    resolve(1000);
+  })
+}).then(data=>{
+  console.log(data);
 })
 
 // .then(function (data) {
