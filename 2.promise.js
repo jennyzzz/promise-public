@@ -42,7 +42,7 @@ Promise.prototype.then = function (onFulfilled,onRejected) {
   // executor中有异步操作，此时调用then时 处于等待态
   if(self.status === 'pending'){
     self.onResolvedCallbacks.push(function(){
-      onFulfilled(self.value)
+      onFulfilled(self.value);
     });
     self.onRejectedCallbacks.push(function () {
       onRejected(self.reason);
