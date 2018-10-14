@@ -13,7 +13,7 @@ let Dep = {
       })
     }
   }
-}
+};
 // 观察者模式基于发布订阅 vue 观察者模式
 Dep.on(function() {
   console.log(school);
