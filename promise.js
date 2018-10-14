@@ -65,6 +65,11 @@ function resolvePromise(promise2,x,resolve,reject) {
         resolve(x);
       }
     }catch(e){
+      if (!called) {
+        called = true;
+      } else {
+        return
+      }
       reject(e);
     }
   }else{
