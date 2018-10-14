@@ -130,7 +130,39 @@ Promise.prototype.then = function (onFulfilled,onRejected) {
   });
   return promise2;
 }
-
+Promise.prototype.catch = function (errFn) {
+  // catch就是特殊的then方法
+  return this.then(null, errFn)
+}
+Promise.reject = function (reason) {
+  return new Promise((resolve,reject)=>{
+    reject(reason);
+  })
+}
+Promise.resolve = function (value) {
+  return new Promise((resolve, reject) => {
+    resolve(value);
+  })
+}
+Promise.prototype.finally = function(callback){
+  // 无论如何finally中传递的回调函数 必须会执行
+  return this.then(function (data) {
+    // 返回一个promise,将上一次的状态继续传递下去
+    return Promise.resolve(callback()).then(()=>data)
+  },function (reason) {
+    return Promise.resolve(callback()).then(()=>{
+      throw reason
+    })
+  })
+}
+// Promise.prototype.finally = function (callback) {
+//   let P = this.constructor;
+//   return this.then(
+//     value => P.resolve(callback()).then(() => value),
+//     reason => P.resolve(callback()).then(() => { throw reason })
+//   );
+// };
+// 没人用了
 Promise.defer = Promise.deferred = function () {
   let dfd = {};
   dfd.promise = new Promise((resolve,reject)=>{
@@ -139,4 +171,5 @@ Promise.defer = Promise.deferred = function () {
   })
   return dfd
 }
+
 module.exports = Promise;
