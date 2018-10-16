@@ -14,7 +14,8 @@ let Dep = {
     }
   }
 };
-// 观察者模式基于发布订阅 vue 观察者模式
+// 观察者模式基于发布订阅 vue是观察者模式
+// 观察者 大于 发布订阅
 Dep.on(function() {
   console.log(school);
 });
