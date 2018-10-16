@@ -1,14 +1,19 @@
+// 增加 订阅发布
+
 function Promise(executor) {
   let self = this;
   // 保存成功的值和失败的原因
   self.value = undefined;
   self.reason = undefined;
+  
   // 专门存成功的回调
   self.onResolvedCallbacks = [];
   // 专门存失败的回调
   self.onRejectedCallbacks = [];
+  
   // 保存一下当前这个promise的状态(promise有三个状态)
   self.status = 'pending';
+  
   function resolve(value) {
     if (self.status === 'pending') {
       self.value = value;
@@ -18,6 +23,7 @@ function Promise(executor) {
       });
     }
   }
+  
   function reject(reason) {
     if (self.status === 'pending') {
       self.reason = reason;
@@ -27,6 +33,7 @@ function Promise(executor) {
       })
     }
   }
+  
   executor(resolve, reject);
   // executor是立即执行的
 }
@@ -39,7 +46,7 @@ Promise.prototype.then = function (onFulfilled,onRejected) {
   if (self.status === 'rejected') {
     onRejected(self.reason);
   }
-  // executor中有异步操作，此时调用then时 处于等待态
+  // 如果executor中有异步操作，此时调用then时 处于等待态
   if(self.status === 'pending'){
     self.onResolvedCallbacks.push(function(){
       onFulfilled(self.value);
@@ -49,4 +56,5 @@ Promise.prototype.then = function (onFulfilled,onRejected) {
     })
   }
 }
+
 module.exports = Promise
