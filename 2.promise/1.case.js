@@ -9,8 +9,4 @@ p.then(function (value) {
 },function (reason) {
   console.log('rea',reason);
 });
-p.then(function (value) {
-  console.log('val', value);
-}, function (reason) {
-  console.log('rea', reason);
-});
+
