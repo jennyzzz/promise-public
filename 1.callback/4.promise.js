@@ -3,7 +3,7 @@
 // Promise使用时 需要new Promise
 let p = new Promise(function (resolve,reject) {
   resolve('有钱'); // 以第一次调用为准
-  reject();
+  reject(); // 第二次调用就没有用了
 });
 p.then(function (value) { // 成功的函数
   console.log('success',value)
@@ -14,9 +14,9 @@ p.then(function (value) { // 成功的函数
 // 2. new Promise时需要传递一个executor执行器 （同步执行的）
 // 3. exector中有两个参数 resolve成功 reject代表的是失败
 // 4. 每个promise的实例上都有一个then方法 then方法中两个函数 （成功函数和失败函数）
-// 5.promise 中有三个状态 pedding态， resolved 
-//   pendding -> resolved   pendding -> rejected
-//   resolved 不能和 rejected 进行转化
+// 5.promise 中有三个状态 pending态， resolved， rejected
+//   可以pending -> resolved   可以pendding -> rejected
+//   但是resolved 不能和 rejected 进行转化
 
 let fs = require('fs');
 
@@ -56,8 +56,8 @@ read('name.txt','utf8')
   // then中返回promise 会把promise的结果作为下一个then的参数，then返回的是一个普通的值，把这个普通作为下一次的then的成功的结果
 }).then(function (data) {
     console.log('then',data);
-    return Promise.reject('失败了');
-}).then(null,function(err){
+    return Promise.reject('失败了'); // 强制失败
+}).then(null,function(err){ // 可以某个参数为null
   console.log(err);
   throw new Error('错误了'); // 如果then方法执行抛出了异常会走下一次then的失败的回调
 }).then(null,function (err) {
@@ -66,6 +66,6 @@ read('name.txt','utf8')
 
 // 多个异步并发执行 需要再同一时刻内获取最终的结果
 // 计数器
-Promise.all([read('name.txt','utf8'), read('age.txt','utf8')]).then(function (data) {
+Promise.all([read('name.txt','utf8'), read('age.txt','utf8'), read('address.txt','utf8')]).then(function (data) {
   console.log(data); // 保证顺序和调用时一样
 });
