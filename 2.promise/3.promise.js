@@ -47,9 +47,9 @@ Promise.prototype.then = function (onFulfilled,onRejected) {
   // 调用then后返回一个promise
   let promise2 = new Promise(function(resolve,reject){
     if (self.status === 'resolved') {
-      // 我们限制需要做的事情就是把then中成功或者失败后函数执行的结果获取到
+      // 我们现在需要做的事情就是把then中成功或者失败后函数执行的结果获取到
       // 看一看是不是promise 如果是promise 就让promise执行，取到最终这个promise的执行结果 ，让返回的promise 成功或者失败
-      // 如果x是普通值就让这个返回的promise 变成成功态
+      // 如果x是普通值就让这个返回的promise 变成 成功态
       let x = onFulfilled(self.value);
       resolvePromise(x, promise2,resolve,reject);
     }
@@ -57,7 +57,7 @@ Promise.prototype.then = function (onFulfilled,onRejected) {
       let x = onRejected(self.reason);
       resolvePromise(x, promise2, resolve, reject);
     }
-    // executor中有异步操作，此时调用then时 处于等待态
+    // 若executor中有异步操作，此时调用then时 处于等待态
     if (self.status === 'pending') {
       self.onResolvedCallbacks.push(function () {
         let x = onFulfilled(self.value);
